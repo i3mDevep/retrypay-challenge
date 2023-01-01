@@ -1,11 +1,15 @@
-/**
- * This file is just a silly example to show everything working in the browser.
- * When you're ready to start on your site, clear the file. Happy hacking!
- **/
+import { observableFactory } from './store/observable';
+import { actionsFactory } from './store/actions';
 
-import confetti from 'canvas-confetti';
+import { INITIAL_STATE } from './store/state';
+import { createWebComponents } from './components';
 
-confetti.create(document.getElementById('canvas') as HTMLCanvasElement, {
-  resize: true,
-  useWorker: true,
-})({ particleCount: 200, spread: 200 });
+const observableState = observableFactory(INITIAL_STATE);
+const actions = actionsFactory(observableState);
+
+window.applicationContext = Object.freeze({
+  observableState,
+  actions,
+});
+
+createWebComponents();

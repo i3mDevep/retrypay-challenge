@@ -9,9 +9,30 @@
     <title>Snowpack App</title>
   </head>
   <body>
-    <img id="img" src="/logo.svg" />
-    <canvas id="canvas"></canvas>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app"></div> 
+    <template id="html-app">
+      <div class="container">
+        <h1>Trello App</h1>
+        <div style="margin: 20px;">
+          <create-project-form></create-project-form>
+
+        </div>
+        <project-list></project-list>
+        <project-selected></project-selected>
+      </div>
+    </template>
+    <template id="create-project-form">
+      <form>
+        <div class="row mt-4">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Name project" aria-label="name">
+            <input type="text" class="form-control" placeholder="Available states" aria-label="states">
+          </div>
+        </div>
+        <button style="margin: 10px;">save</button>
+      </form>
+    </template>
+    <html-app></html-app>
     <script type="module" src="/dist/index.js"></script>
     <!--
       This HTML file is a template.

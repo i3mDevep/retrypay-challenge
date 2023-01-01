@@ -12,3 +12,14 @@
   width: 540px;
   height: 540px;
 }
+
+.project__state-container {
+  display: flex;
+}
+
+.project__state-item {
+  min-width: 200px;
+  min-height: 500px;
+  background-color: beige;
+  margin: 30px;
+}
