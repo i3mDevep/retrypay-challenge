@@ -14,7 +14,7 @@
 }
 
 .project__state-container {
-  display: flex;
+  display: block;
 }
 
 .project__state-item {

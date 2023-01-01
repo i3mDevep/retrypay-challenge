@@ -1,4 +1,5 @@
 import type { ProjectDomain } from 'src/core/project';
+import type { TaskDomain } from 'src/core/task';
 import type { InitStateInterface } from 'src/store/state';
 import { equalDeep } from '../../utils/equalDeep';
 
@@ -8,7 +9,7 @@ interface ParamsConstructorInterface {
 }
 
 export abstract class ObservableElement extends HTMLElement {
-  abstract updateContent(): void;
+  abstract updateContent(name: string, oldValue: string, newValue:string): void;
 
   get projects() {
     if (!this.hasAttribute('projects')) return [];
@@ -24,6 +25,23 @@ export abstract class ObservableElement extends HTMLElement {
       !equalDeep(this.projects, value)
     ) {
       this.setAttribute('projects', JSON.stringify(value));
+    }
+  }
+
+  get tasks() {
+    if (!this.hasAttribute('tasks')) return [];
+
+    return JSON.parse(this.getAttribute('tasks')!) as TaskDomain[];
+  }
+
+  set tasks(value) {
+    if (
+      (
+        this.constructor as unknown as ParamsConstructorInterface
+      ).observedAttributes.includes('tasks') &&
+      !equalDeep(this.tasks, value)
+    ) {
+      this.setAttribute('tasks', JSON.stringify(value));
     }
   }
 
@@ -52,11 +70,12 @@ export abstract class ObservableElement extends HTMLElement {
       (state: InitStateInterface) => {
         this.projects = state.projects;
         this.selectedProject = state.selectedProject;
+        this.tasks = state.tasks;
       },
     );
   }
 
-  attributeChangedCallback() {
-    this.updateContent();
+  attributeChangedCallback(name: string, oldValue: string, newValue:string) {
+    this.updateContent(name, oldValue, newValue);
   }
 }

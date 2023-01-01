@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Web site created using create-snowpack-app" />
     <link rel="stylesheet" type="text/css" href="/index.css" />
-    <title>Snowpack App</title>
+    <title>Trello App</title>
   </head>
   <body>
     <div id="app"></div> 
@@ -15,10 +15,9 @@
         <h1>Trello App</h1>
         <div style="margin: 20px;">
           <create-project-form></create-project-form>
-
         </div>
-        <project-list></project-list>
-        <project-selected></project-selected>
+        <project-select></project-select>
+        <project-list-states></project-list-states>
       </div>
     </template>
     <template id="create-project-form">
@@ -29,10 +28,20 @@
             <input type="text" class="form-control" placeholder="Available states" aria-label="states">
           </div>
         </div>
-        <button style="margin: 10px;">save</button>
+        <button style="margin: 10px;">Add project</button>
       </form>
     </template>
-    <html-app></html-app>
+    <template id="project-item-state">
+      <div class="project__state-container">
+        <button class="project__add-task">Add new task</button>
+        <input type="text" placeholder="Name task" aria-label="name-task">
+        <div class="project__list-task">
+          <h3 slot="project-title-state">TITLE STATE</h3>
+          <div slot="project-list-task"></div>
+        </div>
+      </div>
+    </template>
+    <html-app />
     <script type="module" src="/dist/index.js"></script>
     <!--
       This HTML file is a template.

@@ -1,11 +1,15 @@
 import { HtmlApp } from './html-app/html-app';
-import { ProjectList } from './project/project-list'
-import { ProjectSelected } from './project/project-selected'
-import {  CreateProjectForm } from './project/create-project-form'
+import { ProjectSelect } from './project/project-select'
+import { ProjectListStates } from './project/project-list-states'
+import { CreateProjectForm } from './project/create-project-form'
+import { ProjectItemState } from './project/project-item-state'
+import { TaskItemState } from './task/task-item'
 
 export function createWebComponents() {
   window.customElements.define('html-app', HtmlApp);
-  window.customElements.define('project-list', ProjectList);
-  window.customElements.define('project-selected', ProjectSelected);
+  window.customElements.define('project-select', ProjectSelect);
+  window.customElements.define('project-list-states', ProjectListStates);
+  window.customElements.define('project-item-state', ProjectItemState);
   window.customElements.define('create-project-form', CreateProjectForm);
+  window.customElements.define('task-item', TaskItemState);
 }

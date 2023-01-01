@@ -1,8 +1,9 @@
-import type { ProjectDomain } from "src/core/project";
+import type { TaskDomain } from "../core/task";
+import type { ProjectDomain } from "../core/project";
 
 export interface InitStateInterface {
     projects: ProjectDomain[]
-    tasks: any[]
+    tasks: TaskDomain[]
     selectedProject: ProjectDomain | undefined
 }
 

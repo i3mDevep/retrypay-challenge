@@ -11,4 +11,8 @@ export class ProjectApplication {
     createNewProject(data: ProjectDomain){
         return this.repository.create(data)
     }
+
+    deleteProject(projectId: string){
+        return this.repository.delete(projectId)
+    }
 }

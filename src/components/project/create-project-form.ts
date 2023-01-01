@@ -40,6 +40,8 @@ export class CreateProjectForm extends HTMLElement {
 
       await moduleProject.createNewProject(projectNew);
       window.applicationContext.actions.addListProject([projectNew], true);
+      window.applicationContext.actions.changeSelectProject(projectNew.id);
+
     });
   }
 }
