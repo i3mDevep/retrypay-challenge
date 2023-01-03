@@ -31,22 +31,50 @@ export class ProjectItemState extends ObservableElement {
       window.applicationContext.actions.addListTask([task], true);
     });
 
+
     containerTasks.innerHTML = `
     <h3 slot="project-title-state">${this.getAttribute(
       'project-state-name',
     )}</h3>
     
-    
+    <div slot="project-list-task" id="project__list-task" draggable="true" class="project__list-task">
     ${this.tasks
       .filter((s) => s.state === this.getAttribute('project-state-name'))
-      .map(
-        (st) =>
-          `<div slot="project-list-task"><task-item task-name="${st.name}"></task-item></div>`,
-      )
+      .map((st) => `<task-item id="item-task-${st.name}" task-name="${st.name}"></task-item>`)
       .join('')}
+      </div>
     `;
 
     content && this.replaceChildren(content);
+
+    const listTask = this.getElementsByClassName('project__list-task')?.[0];
+    
+    listTask?.addEventListener('drop', (ev: any) => {
+      ev.stopPropagation();
+      const sourceId = JSON.parse(ev.dataTransfer.getData('text/plain')).parentTaskId;
+      const sourceIdEl = document.getElementById(sourceId);
+      const targetEl = document.getElementById(ev.target.id);
+
+      if (targetEl && sourceIdEl) listTask?.appendChild(sourceIdEl);
+
+      return false;
+    });
+
+    listTask?.addEventListener('dragover', (e) => {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+
+      return false;
+    });
+
+    // (listTask?.[0] as HTMLElement)?.addEventListener('dragenter', () => {
+    //   (listTask?.[0] as HTMLElement)?.classList.add('over');
+    // });
+
+    // (listTask?.[0] as HTMLElement)?.addEventListener('dragleave', () => {
+    //   (listTask?.[0] as HTMLElement)?.classList.remove('over');
+    // });
   }
 
   connectedCallback() {

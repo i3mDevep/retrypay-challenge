@@ -1,4 +1,10 @@
 .project__list-task {
+    background-color: rgb(235, 236, 240);
+    border-radius: 3px;
     display: grid;
-    gap: 10px;
+    grid-auto-rows: max-content;
+    grid-gap: 10px;
+    height: max-content;
+    min-height: 300px;
+    padding: 10px;
 }
