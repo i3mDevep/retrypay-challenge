@@ -1,0 +1,11 @@
+.task__item-box {
+    border: 3px solid #666;
+    background-color: #ddd;
+    border-radius: .5em;
+    padding: 10px;
+    cursor: move;
+}
+
+.task__item-box.over {
+    border: 3px dotted #666;
+  }

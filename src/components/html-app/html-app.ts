@@ -1,5 +1,8 @@
 import confetti from 'canvas-confetti';
 
+import '../task/styles.css'
+import '../project/styles.css'
+
 export class HtmlApp extends HTMLElement {
   template: HTMLTemplateElement;
   constructor() {

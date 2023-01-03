@@ -23,12 +23,13 @@ export class ProjectSelect extends ObservableElement {
   }
 
   public updateContent() {
-    this.innerHTML = ` <select name="projects" id="projects">
+    this.innerHTML = ` 
+    <select name="projects" id="projects">
         <option>Choose a project</option>
         ${this.projects.map(
           (project) => `<option value="${project.id}">${project.name}</option>`,
         )}
-      </select>`;
+    </select>`;
     const select = this.querySelector('select');
     select?.addEventListener('change', (ev) => {
       const pro = window.applicationContext.actions.changeSelectProject(

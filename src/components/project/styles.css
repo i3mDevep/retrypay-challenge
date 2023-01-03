@@ -1,0 +1,4 @@
+.project__list-task {
+    display: grid;
+    gap: 10px;
+}
