@@ -1,11 +1,36 @@
 .task__item-box {
-    border: 3px solid #666;
-    background-color: #ddd;
-    border-radius: .5em;
-    padding: 10px;
-    cursor: move;
+    max-width: 270px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 2px;
+    margin-right: 0px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    box-shadow: var(--ds-shadow-raised,0 1px 1px rgba(23,43,77,0.2),0 0 1px rgba(23,43,77,0.2));
+    transition-duration: 140ms, 140ms;
+    transition-timing-function: ease-in-out, ease-in-out;
+    transition-delay: initial, initial;
+    transition-property: background-color, color;
+    background-color: var(--ds-surface-raised,#FFFFFF);
+    color: var(--ds-text,#172B4D);
+    filter: none;
+    min-height: 133px;
+}
+
+.task__item-box span {
+    margin: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    padding: 32px;
 }
 
 .task__item-box.over {
-    border: 3px dotted #666;
-  }
+  border: 3px dotted #666;
+}

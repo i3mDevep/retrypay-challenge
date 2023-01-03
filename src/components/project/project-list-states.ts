@@ -14,11 +14,10 @@ export class ProjectListStates extends ObservableElement {
     if (!this.selectedProject?.name) return (this.innerHTML = '');
 
     this.innerHTML = `
-    <h3 slot="project-title-project">${
-      this.selectedProject?.name
-    }     <span><button class="project_delete">delete</button></span>
-    </h3>
-    <div style="display:flex;justify-content: center;gap: 50px;">
+    <div style="margin: 2rem;">
+    ${this.selectedProject.name}
+    </div>
+    <div style="display:flex;justify-content: center;gap: 50px; max-width: 90%; margin: auto;">
     ${this.selectedProject?.statesAvailable
       .map(
         (st) =>
@@ -27,15 +26,9 @@ export class ProjectListStates extends ObservableElement {
       .join('')}
     </div>
     `;
-    const buttonDelete = this.querySelector('button')
-    buttonDelete?.addEventListener('click', () => this.deleteProject())
+
   }
 
-  private async deleteProject(){
-    await moduleProject.deleteProject(this.selectedProject!.id);
-    window.applicationContext.actions.addListProject(this.projects.filter((p) => p.id !== this.selectedProject!.id));
-    window.applicationContext.actions.changeSelectProject(this.selectedProject!.id);
-  }
 
   connectedCallback() {
     super.connectAttributes();

@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <style> @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap'); </style>
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Web site created using create-snowpack-app" />
@@ -11,47 +12,34 @@
   <body>
     <div id="app"></div> 
     <template id="html-app">
-      <div class="container">
-        <h1>Trello App</h1>
-        <div style="margin: 20px;">
-          <create-project-form></create-project-form>
-        </div>
-        <project-select></project-select>
-        <project-list-states></project-list-states>
+      <div class="wrapper-app">
+        <project-select class="select-project"></project-select>
+        <project-delete></project-delete>
+        <create-project-form class="create-project"></create-project-form>
+        <project-list-states class="list-task-states"></project-list-states>
       </div>
     </template>
     <template id="create-project-form">
-      <form>
-        <div class="row mt-4">
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Name project" aria-label="name">
-            <input type="text" class="form-control" placeholder="Available states" aria-label="states">
-          </div>
-        </div>
-        <button style="margin: 10px;">Add project</button>
+      <form style="width: min-content;">
+        <label for="name">Name project:</label><br>
+        <input type="text" class="form-control" placeholder="Name project" name="name" aria-label="name"><br>
+        <label for="states">States available:</label><br>
+        <input type="text" class="form-control" placeholder="Available states" name="states" aria-label="states"><br>
+        <br>
+        <button style="width: 100%;">Save</button>
       </form>
     </template>
     <template id="project-item-state">
       <div class="project__state-container">
-        <button class="project__add-task">Add new task</button>
+        <button class="project__add-task" style="margin-bottom: 10px;">Add new task</button>
         <input type="text" placeholder="Name task" aria-label="name-task">
-        <div>
-          <h3 slot="project-title-state">TITLE STATE</h3>
+        <div class="project__state-task-list">
+          <p slot="project-title-state">TITLE STATE</p>
           <div slot="project-list-task"></div>
         </div>
       </div>
     </template>
     <html-app />
     <script type="module" src="/dist/index.js"></script>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

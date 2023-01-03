@@ -1,8 +1,12 @@
 import { nanoid } from 'nanoid';
 import { moduleProject } from '../../core/project/module';
 import { ProjectDomain, statesAvailableDefault } from '../../core/project';
+import { ObservableElement } from '../shared/observable-element';
 
-export class CreateProjectForm extends HTMLElement {
+export class CreateProjectForm extends ObservableElement {
+  static get observedAttributes() {
+    return ['selected-project'];
+  }
   template: HTMLTemplateElement;
   form?: HTMLFormElement | null;
   input?: HTMLInputElement | null;
@@ -12,6 +16,7 @@ export class CreateProjectForm extends HTMLElement {
     this.template = document.getElementById(
       'create-project-form',
     ) as HTMLTemplateElement;
+    this.updateContent();
   }
 
   private createStatesAvailable() {
@@ -20,9 +25,14 @@ export class CreateProjectForm extends HTMLElement {
     return states.map((name, order) => ({ name, order }));
   }
 
-  connectedCallback() {
+  updateContent(): void {
+    if (this.selectedProject) {
+      this.innerHTML = '';
+      return;
+    }
+
     const content = this.template.content.firstElementChild?.cloneNode(true);
-    content && this.appendChild(content);
+    content && this.replaceChildren(content);
     this.form = this.querySelector('form');
     this.input = this.querySelector('[aria-label="states"]');
     this.input?.setAttribute(
@@ -41,7 +51,10 @@ export class CreateProjectForm extends HTMLElement {
       await moduleProject.createNewProject(projectNew);
       window.applicationContext.actions.addListProject([projectNew], true);
       window.applicationContext.actions.changeSelectProject(projectNew.id);
-
     });
+  }
+
+  connectedCallback() {
+    super.connectAttributes();
   }
 }

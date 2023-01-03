@@ -33,14 +33,14 @@ export class ProjectItemState extends ObservableElement {
 
 
     containerTasks.innerHTML = `
-    <h3 slot="project-title-state">${this.getAttribute(
+    <p slot="project-title-state" class="project__title-state">${this.getAttribute(
       'project-state-name',
-    )}</h3>
+    )?.toLocaleLowerCase()}</p>
     
     <div slot="project-list-task" id="project__list-task" draggable="true" class="project__list-task">
     ${this.tasks
       .filter((s) => s.state === this.getAttribute('project-state-name'))
-      .map((st) => `<task-item id="item-task-${st.name}" task-name="${st.name}"></task-item>`)
+      .map((st) => `<task-item id="item-task-${st.id}" task-name="${st.name}"></task-item>`)
       .join('')}
       </div>
     `;
@@ -49,13 +49,15 @@ export class ProjectItemState extends ObservableElement {
 
     const listTask = this.getElementsByClassName('project__list-task')?.[0];
     
-    listTask?.addEventListener('drop', (ev: any) => {
+    listTask?.addEventListener('drop', async (ev: any) => {
       ev.stopPropagation();
       const sourceId = JSON.parse(ev.dataTransfer.getData('text/plain')).parentTaskId;
       const sourceIdEl = document.getElementById(sourceId);
       const targetEl = document.getElementById(ev.target.id);
 
       if (targetEl && sourceIdEl) listTask?.appendChild(sourceIdEl);
+      listTask?.classList.remove('over');
+
 
       return false;
     });
@@ -68,14 +70,16 @@ export class ProjectItemState extends ObservableElement {
       return false;
     });
 
-    // (listTask?.[0] as HTMLElement)?.addEventListener('dragenter', () => {
-    //   (listTask?.[0] as HTMLElement)?.classList.add('over');
-    // });
+    listTask?.addEventListener('dragenter', () => {
+      listTask?.classList.add('over');
+    });
 
-    // (listTask?.[0] as HTMLElement)?.addEventListener('dragleave', () => {
-    //   (listTask?.[0] as HTMLElement)?.classList.remove('over');
-    // });
+    listTask?.addEventListener('dragleave', () => {
+      listTask?.classList.remove('over');
+    });
   }
+
+
 
   connectedCallback() {
     super.connectAttributes();

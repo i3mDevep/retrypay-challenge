@@ -21,6 +21,17 @@ export class PersistenceLocalStorage<
     return Promise.resolve(this.db.map((l) => this.fromPrimitives(l)));
   }
 
+  update(data: Domain): Promise<void> {
+    const listOverride = this.db.map((p) => {
+      if(p.id === (data as any).id) return data as unknown as DomainProps
+      return p
+    });
+
+    this.db = listOverride;
+    localStorage.setItem(this.table, JSON.stringify(listOverride));
+    return Promise.resolve();
+  }
+
   create(data: Domain): Promise<void> {
     this.db.push(data as unknown as DomainProps);
     localStorage.setItem(this.table, JSON.stringify(this.db));

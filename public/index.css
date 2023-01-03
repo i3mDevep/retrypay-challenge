@@ -1,3 +1,82 @@
+html {
+  font-family: 'Poppins', sans-serif;
+}
+
+button {
+  -webkit-box-align: baseline;
+  outline: none;
+  border: none;
+  align-items: baseline;
+  border-top-width: 0px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  box-sizing: border-box;
+  display: inline-flex;
+  font-size: inherit;
+  font-style: normal;
+  font-family: inherit;
+  font-weight: 500;
+  max-width: 100%;
+  position: relative;
+  text-align: center;
+  text-decoration-line: none;
+  text-decoration-style: initial;
+  text-decoration-color: initial;
+  text-decoration: none;
+  transition-duration: 0.1s, 0.15s;
+  transition-timing-function: ease-out, cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  transition-delay: initial, initial;
+  cursor: pointer;
+  height: 2.2857142857142856em;
+  line-height: 2.2857142857142856em;
+  padding-top: 0px;
+  padding-right: 10px;
+  vertical-align: middle;
+  width: auto;
+  -webkit-box-pack: center;
+  justify-content: center;
+  color: #42526E;
+}
+
+input, select {
+  padding: 0.6rem;
+  outline: none;
+  border-color: gray;
+  border: 1px solid #8888;
+  border-radius: 10px;
+}
+
+label {
+  font-size: 0.8rem;
+}
+
+.wrapper-app {
+  display: grid;
+  gap: 10px;
+  grid-template-areas:
+    "select-project ."
+    "create-project create-project" 
+    "list-task-states list-task-states";
+  grid-template-columns: 1fr 6fr;
+}
+
+.select-project {
+  grid-area: select-project;
+}
+
+.create-project {
+  grid-area: create-project;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-task-states {
+  grid-area: list-task-states;
+}
+
 #img {
   display: block;
   margin: auto;
@@ -15,11 +94,5 @@
 
 .project__state-container {
   display: block;
-}
-
-.project__state-item {
-  min-width: 200px;
-  min-height: 500px;
-  background-color: beige;
-  margin: 30px;
+  height: 100%;
 }
