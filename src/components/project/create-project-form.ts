@@ -31,8 +31,12 @@ export class CreateProjectForm extends ObservableElement {
       return;
     }
 
-    const content = this.template.content.firstElementChild?.cloneNode(true);
-    content && this.replaceChildren(content);
+    const buttonCreateProject = this.template.content.children[0]?.cloneNode(true);
+    const content = this.template.content.children[1]?.cloneNode(true);
+
+    buttonCreateProject && this.replaceChildren(buttonCreateProject);
+    content && this.appendChild(content);
+
     this.form = this.querySelector('form');
     this.input = this.querySelector('[aria-label="states"]');
     this.input?.setAttribute(

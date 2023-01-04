@@ -20,25 +20,16 @@ export class ProjectItemState extends ObservableElement {
 
   public updateContent() {
     const content = this.template.content.firstElementChild?.cloneNode(true);
-    const [createTask, inputNameTask, containerTasks] =
-      (content as Element)?.children ?? [];
-    (createTask as HTMLButtonElement).addEventListener('click', async () => {
-      const task = {
-        id: nanoid(),
-        name: (inputNameTask as HTMLInputElement).value,
-        priority: -1, // Auto increment
-        project: this.getAttribute('project-id')!,
-        state: this.getAttribute('project-state-name')!,
-      };
-      await moduleTask.createNewTask(task);
-      const taskCreated = await moduleTask.getTask(task.id);
-      window.applicationContext.actions.addListTask([taskCreated], true);
-    });
+    const [taskCreate, containerTasks] = (content as Element)?.children ?? [];
+
+    const stateName =
+      this.getAttribute('project-state-name')!;
+
+    taskCreate.setAttribute('project-state-name', stateName);
+    taskCreate.setAttribute('project-id', this.getAttribute('project-id')!);
 
     containerTasks.innerHTML = `
-    <p slot="project-title-state" class="project__title-state">${this.getAttribute(
-      'project-state-name',
-    )?.toLocaleLowerCase()}</p>
+    <p slot="project-title-state" class="project__title-state">${stateName}</p>
     
     <div slot="project-list-task" id="project__list-task" draggable="true" class="project__list-task">
     ${this.tasks

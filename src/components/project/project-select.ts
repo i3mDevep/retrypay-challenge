@@ -20,7 +20,8 @@ export class ProjectSelect extends ObservableElement {
 
   public updateContent() {
     this.innerHTML = ` 
-    <select name="projects" id="projects">
+    Choose a project:
+    <select name="projects" id="projects" style="margin:10px">
         <option>Create a new project</option>
         ${this.projects.map(
           (project) => `<option value="${project.id}">${project.name}</option>`,

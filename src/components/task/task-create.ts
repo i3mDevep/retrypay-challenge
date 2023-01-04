@@ -9,23 +9,22 @@ export class TaskCreate extends ObservableElement {
 
   constructor() {
     super();
-
   }
 
   public updateContent() {
 
     const createTaskButton = document.createElement('button')
-    const inputTaskName = document.createElement('button')
+    const inputTaskName = document.createElement('input')
     inputTaskName.setAttribute('type', 'text')
     inputTaskName.setAttribute('placeholder', 'Name task')
     inputTaskName.setAttribute('aria-label', 'name-task')
 
     createTaskButton.setAttribute('class', 'project__add-task')
-    createTaskButton.setAttribute('style', 'margin-bottom: 10px;');
+    createTaskButton.setAttribute('style', 'margin: 10px;');
     createTaskButton.innerHTML = 'Add new task'
 
 
-    this.appendChild(createTaskButton)
+    this.replaceChildren(createTaskButton)
     this.appendChild(inputTaskName)
 
     createTaskButton.addEventListener('click', async () => {
@@ -37,11 +36,16 @@ export class TaskCreate extends ObservableElement {
         state: this.getAttribute('project-state-name')!,
       };
 
+      debugger
       await moduleTask.createNewTask(task);
       const taskCreated = await moduleTask.getTask(task.id);
       window.applicationContext.actions.addListTask([taskCreated], true);
     });
 
+  }
+
+  connectedCallback() {
+    super.connectAttributes();
   }
   
 }

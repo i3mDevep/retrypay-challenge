@@ -49,10 +49,17 @@
   color: #172B4D;
   font-size: 0.9rem;
 }
-
+.project__form {
+  width: min-content;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  color: black;
+}
 .project_delete {
     background-color: #fe6464;
     color: white;
+    margin-top: 2rem;
 }
 
 .project__title-state::before {

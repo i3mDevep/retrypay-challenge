@@ -20,7 +20,8 @@
       </div>
     </template>
     <template id="create-project-form">
-      <form style="width: min-content;">
+      <h2>Create new project</h2>
+      <form class="project__form">
         <label for="name">Name project:</label><br>
         <input type="text" class="form-control" placeholder="Name project" name="name" aria-label="name"><br>
         <label for="states">States available:</label><br>
@@ -31,8 +32,7 @@
     </template>
     <template id="project-item-state">
       <div class="project__state-container">
-        <button class="project__add-task" style="margin-bottom: 10px;">Add new task</button>
-        <input type="text" placeholder="Name task" aria-label="name-task">
+        <task-create></task-create>
         <div class="project__state-task-list">
           <p slot="project-title-state">TITLE STATE</p>
           <div slot="project-list-task"></div>

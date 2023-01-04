@@ -15,4 +15,18 @@ export const list: TaskDomainProps[] = [
     project: '1',
     state: 'PROGRESSING'
   },
+  {
+    id: '3',
+    name: 'Change this task status by dragging it to the next column',
+    priority: 2,
+    project: '1',
+    state: 'TODO'
+  },
+  {
+    id: '4',
+    name: 'Change task priority by dragging up or down',
+    priority: 2,
+    project: '1',
+    state: 'PROGRESSING'
+  },
 ];
