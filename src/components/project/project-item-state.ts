@@ -1,6 +1,9 @@
 import { nanoid } from 'nanoid';
+import type { TaskDomainProps } from '../../core/task';
 import { moduleTask } from '../../core/task/module';
 import { ObservableElement } from '../shared/observable-element';
+
+type UpdateDataType = Pick<TaskDomainProps, 'id' | 'priority' | 'state'>;
 
 export class ProjectItemState extends ObservableElement {
   static get observedAttributes() {
@@ -23,14 +26,14 @@ export class ProjectItemState extends ObservableElement {
       const task = {
         id: nanoid(),
         name: (inputNameTask as HTMLInputElement).value,
-        priority: 1,
+        priority: -1, // Auto increment
         project: this.getAttribute('project-id')!,
         state: this.getAttribute('project-state-name')!,
       };
       await moduleTask.createNewTask(task);
-      window.applicationContext.actions.addListTask([task], true);
+      const taskCreated = await moduleTask.getTask(task.id);
+      window.applicationContext.actions.addListTask([taskCreated], true);
     });
-
 
     containerTasks.innerHTML = `
     <p slot="project-title-state" class="project__title-state">${this.getAttribute(
@@ -40,7 +43,18 @@ export class ProjectItemState extends ObservableElement {
     <div slot="project-list-task" id="project__list-task" draggable="true" class="project__list-task">
     ${this.tasks
       .filter((s) => s.state === this.getAttribute('project-state-name'))
-      .map((st) => `<task-item id="item-task-${st.id}" task-name="${st.name}"></task-item>`)
+      .sort((so, sop) => {
+        if (so.priority > sop.priority) return 1;
+        return -1;
+      })
+      .map(
+        (st) =>
+          `<task-item 
+            id="item-task-${st.id}" 
+            task-name="${st.name}" task-priority="${st.priority}" 
+            task-state="${st.state}">
+          </task-item>`,
+      )
       .join('')}
       </div>
     `;
@@ -48,16 +62,32 @@ export class ProjectItemState extends ObservableElement {
     content && this.replaceChildren(content);
 
     const listTask = this.getElementsByClassName('project__list-task')?.[0];
-    
+
     listTask?.addEventListener('drop', async (ev: any) => {
       ev.stopPropagation();
-      const sourceId = JSON.parse(ev.dataTransfer.getData('text/plain')).parentTaskId;
+      const sourceId = JSON.parse(
+        ev.dataTransfer.getData('text/plain'),
+      ).parentTaskId;
       const sourceIdEl = document.getElementById(sourceId);
+      sourceIdEl?.setAttribute(
+        'task-state',
+        this.getAttribute('project-state-name')!,
+      );
       const targetEl = document.getElementById(ev.target.id);
 
-      if (targetEl && sourceIdEl) listTask?.appendChild(sourceIdEl);
+      if (targetEl && sourceIdEl) {
+        listTask?.appendChild(sourceIdEl);
+        const priority = await moduleTask.getPriorityAuto(
+          this.getAttribute('project-id')!,
+          this.getAttribute('project-state-name')!,
+        );
+        this.updateTaskInDatabase({
+          id: sourceIdEl.id.replace('item-task-', ''),
+          priority,
+          state: this.getAttribute('project-state-name')!,
+        });
+      }
       listTask?.classList.remove('over');
-
 
       return false;
     });
@@ -79,7 +109,11 @@ export class ProjectItemState extends ObservableElement {
     });
   }
 
-
+  private async updateTaskInDatabase(data: UpdateDataType) {
+    await moduleTask.updatePartial({ ...data });
+    const taskUpdate = await moduleTask.getTask(data.id);
+    window.applicationContext.actions.updateTask(taskUpdate);
+  }
 
   connectedCallback() {
     super.connectAttributes();

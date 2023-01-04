@@ -1,9 +1,11 @@
 import { moduleTask } from '../../core/task/module';
 import type { TaskDomainProps } from '../../core/task';
 import { ObservableElement } from '../shared/observable-element';
+
+type UpdateDataType = Pick<TaskDomainProps, 'id' | 'priority' | 'state'>;
 export class TaskItemState extends ObservableElement {
   static get observedAttributes() {
-    return ['task-name'];
+    return ['task-name', 'task-state', 'task-priority'];
   }
 
   constructor() {
@@ -45,21 +47,34 @@ export class TaskItemState extends ObservableElement {
       const sourceId = JSON.parse(
         ev.dataTransfer.getData('text/plain'),
       ).parentTaskId;
+
       const sourceIdEl = document.getElementById(sourceId);
       const targetEl = document.getElementById(this.id);
 
       const holderId = sourceIdEl?.id;
-      const holderName = sourceIdEl?.getAttribute('task-name');
-      const targetName = targetEl?.getAttribute('task-name');
+
+      const holderState = sourceIdEl?.getAttribute('task-state');
+      const targetState = targetEl?.getAttribute('task-state');
 
       const holder = sourceIdEl?.children[0]?.cloneNode(true) as HTMLElement;
 
       if (targetEl && sourceIdEl && holder && holderId) {
-        sourceIdEl.id = this.id;
-        sourceIdEl.setAttribute('task-name', targetName!);
-        targetEl.id = holderId;
-        targetEl.setAttribute('task-name', holderName!);
 
+        const holderPriority = sourceIdEl?.getAttribute('task-priority');
+        const targetPriority = targetEl?.getAttribute('task-priority');
+
+        this.updateTaskInDatabase(
+          {
+            id: sourceIdEl.id!.replace('item-task-', ''),
+            priority:Number(targetPriority),
+            state: targetState!,
+          },
+          {
+            id: targetEl.id!.replace('item-task-', ''),
+            priority: Number(holderPriority),
+            state: holderState!,
+          },
+        );
       }
 
       return false;
@@ -104,19 +119,22 @@ export class TaskItemState extends ObservableElement {
   }
 
   private async updateTaskInDatabase(
-    source: Partial<TaskDomainProps>,
-    target: Partial<TaskDomainProps>,
+    source: UpdateDataType,
+    target: UpdateDataType,
   ) {
-    console.log(
-      '🚀 ~ file: project-item-state.ts:86 ~ ProjectItemState ~ updateTaskInDatabase ~ target',
-      target,
-    );
-    console.log(
-      '🚀 ~ file: project-item-state.ts:86 ~ ProjectItemState ~ updateTaskInDatabase ~ source',
-      source,
-    );
+    
+    await moduleTask.updatePartial({ ...source });
+    await moduleTask.updatePartial({ ...target });
 
-    // window.applicationContext.actions.addListTask([task], true);
+    const [t1, t2] = await Promise.all([
+      moduleTask.getTask(source.id),
+      moduleTask.getTask(target.id),
+    ]);
+
+    window.applicationContext.actions.updateTask(t1);
+    window.applicationContext.actions.updateTask(t2);
+
+
   }
 
   connectedCallback() {

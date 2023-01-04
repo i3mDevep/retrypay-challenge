@@ -1,4 +1,3 @@
-import { moduleProject } from '../../core/project/module';
 import { ObservableElement } from '../shared/observable-element';
 
 export class ProjectListStates extends ObservableElement {
@@ -13,6 +12,7 @@ export class ProjectListStates extends ObservableElement {
   public updateContent() {
     if (!this.selectedProject?.name) return (this.innerHTML = '');
 
+    
     this.innerHTML = `
     <div style="margin: 2rem;">
     ${this.selectedProject.name}

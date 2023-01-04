@@ -1,7 +1,6 @@
 import type { InitStateInterface } from './state';
 
 export const actionsFactory = (state: InitStateInterface) => {
-  
   const changeSelectProject = (projectId: string) => {
     const project = state.projects.find((p) => p.id === projectId);
     state.selectedProject = project;
@@ -21,11 +20,19 @@ export const actionsFactory = (state: InitStateInterface) => {
     state.tasks = [...state.tasks, ...tasks];
   };
 
-  const updateTask = (task: InitStateInterface['tasks'][0]) => {
-    const taskFindInd = state.tasks.findIndex((t) => (t.id = task.id));
-    if (taskFindInd !== -1) {
-      state.tasks[taskFindInd] = task;
-    }
+  const updateTask = (
+    task: InitStateInterface['tasks'][0],
+  ) => {
+    const tasksDb = JSON.parse(JSON.stringify(state)).tasks as InitStateInterface['tasks']
+
+    const tasksOverride = (tasksDb).map((t) => {
+      if(t.id === task.id){
+        return task
+      }
+      return t
+    })
+
+    state.tasks = [...tasksOverride]
   };
 
   return {

@@ -21,12 +21,28 @@ export class PersistenceLocalStorage<
     return Promise.resolve(this.db.map((l) => this.fromPrimitives(l)));
   }
 
+  getItem(id: string): Promise<Domain> {
+    return Promise.resolve(
+      this.fromPrimitives(this.db.find((l) => l.id === id)),
+    );
+  }
+
   update(data: Domain): Promise<void> {
     const listOverride = this.db.map((p) => {
-      if(p.id === (data as any).id) return data as unknown as DomainProps
-      return p
+      if (p.id === (data as any).id) return data as unknown as DomainProps;
+      return p;
     });
 
+    this.db = listOverride;
+    localStorage.setItem(this.table, JSON.stringify(listOverride));
+    return Promise.resolve();
+  }
+
+  patch(data: Partial<Omit<Domain, 'id'>> & { id: string }): Promise<void> {
+    const listOverride = this.db.map((p) => {
+      if (p.id === data.id) return { ...p, ...data };
+      return p;
+    });
     this.db = listOverride;
     localStorage.setItem(this.table, JSON.stringify(listOverride));
     return Promise.resolve();
