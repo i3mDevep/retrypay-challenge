@@ -1,9 +1,15 @@
+import { moduleTask } from '../core/task/module';
 import type { InitStateInterface } from './state';
 
 export const actionsFactory = (state: InitStateInterface) => {
-  const changeSelectProject = (projectId: string) => {
+  const changeSelectProject = async (projectId: string) => {
     const project = state.projects.find((p) => p.id === projectId);
     state.selectedProject = project;
+    if (project) {
+      const tasks = await moduleTask.getListFilterProject(project.id);
+      addListTask(tasks);
+    }
+
     return project;
   };
 
@@ -20,19 +26,18 @@ export const actionsFactory = (state: InitStateInterface) => {
     state.tasks = [...state.tasks, ...tasks];
   };
 
-  const updateTask = (
-    task: InitStateInterface['tasks'][0],
-  ) => {
-    const tasksDb = JSON.parse(JSON.stringify(state)).tasks as InitStateInterface['tasks']
+  const updateTask = (task: InitStateInterface['tasks'][0]) => {
+    const tasksDb = JSON.parse(JSON.stringify(state))
+      .tasks as InitStateInterface['tasks'];
 
-    const tasksOverride = (tasksDb).map((t) => {
-      if(t.id === task.id){
-        return task
+    const tasksOverride = tasksDb.map((t) => {
+      if (t.id === task.id) {
+        return task;
       }
-      return t
-    })
+      return t;
+    });
 
-    state.tasks = [...tasksOverride]
+    state.tasks = [...tasksOverride];
   };
 
   return {

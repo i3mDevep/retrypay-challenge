@@ -17,10 +17,6 @@ export class ProjectSelect extends ObservableElement {
     window.applicationContext.actions.addListProject(result);
   }
 
-  private async getTasks(project: string) {
-    const tasks = await moduleTask.getListFilterProject(project);
-    window.applicationContext.actions.addListTask(tasks);
-  }
 
   public updateContent() {
     this.innerHTML = ` 
@@ -36,7 +32,6 @@ export class ProjectSelect extends ObservableElement {
       const pro = window.applicationContext.actions.changeSelectProject(
         (ev.target as HTMLInputElement).value,
       );
-      if (pro) this.getTasks(pro.id);
     });
   }
 

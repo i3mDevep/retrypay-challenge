@@ -42,16 +42,29 @@ export class CreateProjectForm extends ObservableElement {
     this.form?.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      const nameProject = (e.target as unknown as HTMLInputElement[])?.[0]
+        ?.value;
+
       const projectNew = new ProjectDomain({
         id: nanoid(),
-        name: (e.target as unknown as HTMLInputElement[])[0].value,
+        name: nameProject,
         statesAvailable: this.createStatesAvailable(),
       });
 
-      await moduleProject.createNewProject(projectNew);
-      window.applicationContext.actions.addListProject([projectNew], true);
-      window.applicationContext.actions.changeSelectProject(projectNew.id);
+      if (this.validateName(nameProject)) {
+        await moduleProject.createNewProject(projectNew);
+        window.applicationContext.actions.addListProject([projectNew], true);
+        window.applicationContext.actions.changeSelectProject(projectNew.id);
+      }
     });
+  }
+
+  private validateName(name?: string) {
+    if (!name) {
+      alert('Project name is empty');
+      return false;
+    }
+    return true
   }
 
   connectedCallback() {

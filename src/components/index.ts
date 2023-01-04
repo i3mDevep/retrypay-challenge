@@ -6,6 +6,7 @@ import { ProjectItemState } from './project/project-item-state'
 
 import { TaskItemState } from './task/task-item'
 import { ProjectDelete } from './project/delete-project';
+import { TaskCreate } from './task/task-create';
 
 export function createWebComponents() {
   window.customElements.define('html-app', HtmlApp);
@@ -15,5 +16,5 @@ export function createWebComponents() {
   window.customElements.define('project-delete', ProjectDelete);
   window.customElements.define('create-project-form', CreateProjectForm);
   window.customElements.define('task-item', TaskItemState);
-  
+  window.customElements.define('task-create', TaskCreate);
 }
